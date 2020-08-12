@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Calculator - Do your simple math here!</title>
+        <link rel="stylesheet" type="text/css" href="css/reset.css"/>
+        <link rel="stylesheet" type="text/css" href="css/main.css"/>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <div id="calculator">
+            <div id="history-div">
+                <textarea id="history" value="">34</textarea>
+            </div>
+            <div id="equation-div">
+                <input id="equation" type="text" value="1*4+3"/>
+            </div>
+            <div id="keys">
+                <div id="num-keys">
+                    <button id="1" class="key">1</button>
+                    <button id="2" class="key">2</button>
+                    <button id="3" class="key">3</button>
+                    <button id="4" class="key">4</button>
+                    <button id="5" class="key">5</button>
+                    <button id="6" class="key">6</button>
+                    <button id="7" class="key">7</button>
+                    <button id="8" class="key">8</button>
+                    <button id="9" class="key">9</button>
+                    <button id="0" class="key">0</button>
+                    <button id="decimal" class="key">.</button>
+                </div>
+                <div id="func-keys">
+                    <button id="div" class="key">/</button>
+                    <button id="mult" class="key">*</button>
+                    <button id="add" class="key">+</button>
+                    <button id="sub" class="key">-</button>
+                    <button id="undo" class="key">CE</button>
+                    <button id="clear" class="key">C</button>
+                    <button id="left-bracket" class="key">(</button>
+                    <button id="right-bracket" class="key">)</button>
+                    <button id="square" class="key">x<sup>2</sup></button>
+                    <button id="power" class="key">^</button>
+                    <button id="equals" class="key">=</button>
+                </div>
+            </div>
+        </div>
+        <script src="scripts/calc.js"></script>
+    </body>
+</html>
