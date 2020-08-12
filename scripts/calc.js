@@ -8,20 +8,51 @@ let funcMap = new Map([
     [")", { precedence: -1}]
 ]);
 
-let HistoryQueue = function() {
-    this.div = document.querySelector("#history-div");
+let HistoryQueue = function(equationContext) {
+    this.div = document.querySelector("#history-list-div");
     this.queue = [];
-    this.queue_max_length = 5;
+    this.queue_max_length = 20;
+    this.equationContext = equationContext;
 
-    this.push = function(value) {
-        if (this.queue.length == 5) {
+    this.push = function(eq, value) {
+        let isMobile = window.matchMedia("only screen and (max-width: 760px").matches;
+        if (this.queue.length == this.queue_max_length) {
             old_history = this.queue.shift();
             this.div.removeChild(old_history);
+            old_history.childNodes[0].removeEventListener("click", setHistoricEquation);
+            old_history.childNodes[0].removeEventListener("touchend", setHistoricEquation);
+            old_history.childNodes[2].removeEventListener("click", setHistoricValue);
+            old_history.childNodes[2].removeEventListener("touchend", setHistoricValue);
         }
+
         new_history = document.createElement("div");
-        new_history.classList.add("history");
-        new_history.innerText = value;
+        new_history.classList.add("history-div");        
         this.div.appendChild(new_history);
+
+        new_history_eq = document.createElement("span");
+        new_history_eq.classList.add("history-eq");
+        new_history_eq.innerText = eq;
+
+        (!isMobile) ? 
+            new_history_eq.addEventListener("click", setHistoricEquation) :
+            new_history_eq.addEventListener("touchend", setHistoricEquation);
+
+        new_history_value = document.createElement("span");
+        new_history_value.classList.add("history-value");
+        new_history_value.innerText = value;
+
+        (!isMobile) ?
+            new_history_value.addEventListener("click", setHistoricValue) :
+            new_history_value.addEventListener("touchend", setHistoricValue);
+
+        new_history_equals = document.createElement("span");
+        new_history_equals.classList.add("history-equals");
+        new_history_equals.innerText = "="
+
+        new_history.appendChild(new_history_eq);
+        new_history.appendChild(new_history_equals);
+        new_history.appendChild(new_history_value);
+        
         this.queue.push(new_history);
     }
 }
@@ -29,7 +60,7 @@ let HistoryQueue = function() {
 let EquationContext = function() {
     this.textbox = document.querySelector("#equation");
     this.parentheses_count = 0;
-    this.history = new HistoryQueue();
+    this.history = new HistoryQueue(this);
     this.evaluated = false;
 
     this.undo = function() {
@@ -38,24 +69,29 @@ let EquationContext = function() {
         text = text.substring(0, text.length-1);
         this.textbox.value = text;
         this.parentheses_count += (end == "(") ? -1 : ((end == ")") ? 1 : 0);
+        this.evaluated = false;
     }
 
     this.reset = function() {
         this.parentheses_count = 0;
         this.textbox.value = "";
+        this.evaluated = false;
     }
 
     this.push = function(char) {
         let text = this.textbox.value;
+        let valuePlaced = false;
         if (text.match(/ERROR/)) text = "";
         switch (char) {
             case ".":
                 if (text.match(/^.*[\+\/\*\-\^\(]$/) || text.length == 0 || this.evaluated) { //If string ends in operator or open parenthesis, 0.x
                     text += "0.";
+                    valuePlaced = true;
                     break;
                 }
                 else if (text.match(/^((.*)([\+\/\*\-\^\(]))?(\d+)$/)) {    //If placing a decimal place
                     text += char;
+                    valuePlaced = true;
                     break;
                 }
                 break;
@@ -63,11 +99,13 @@ let EquationContext = function() {
                 if (text.match(/^(.*)((\d)|\))+$/)) {                       //If string ends in a digit or closing parenthesis, multiply
                     text += "*("
                     this.parentheses_count++;
+                    valuePlaced = true;
                     break;
                 }
                 else if (text.match(/^.*[^\.]$/) || text.length == 0) {     //If string does not end in a decimal place
                     text += char
                     this.parentheses_count++;
+                    valuePlaced = true;
                     break;
                 }
                 break;
@@ -76,6 +114,7 @@ let EquationContext = function() {
                     if (text.match(/^.*[^\.\+\/\*\-\^\(]$/)) {               //If string does not end in operator or open parenthesis
                         text += char
                         this.parentheses_count--;
+                        valuePlaced = true;
                         break;
                     }
                 }
@@ -86,27 +125,44 @@ let EquationContext = function() {
                         if (text.match(/^.*[\+\/\*\-\^]$/)) 
                             text = text.substring(0, text.length-1);
                         text += char
+                        valuePlaced = true;
                         break;
                     }
                 } else {
                     if (text.match(/^.*[^\)]$/) || text.length == 0) {
                         text = (this.evaluated) ? char : (text + char);
+                        valuePlaced = true;
                         break;
                     }
                 }
         }
         this.textbox.value = text;
         this.evaluated = false;
+        return valuePlaced;
     }
 
     this.evaluate = function() {
+        if (this.parentheses_count > 0) return;
         this.parentheses_count == 0
         let eq = this.textbox.value;
-        let text = evaluateInfix(eq);
-        this.history.push(`${eq} \t ${text}`);
-        this.textbox.value = text;
+        let value = evaluateInfix(eq);
+        this.history.push(eq, value);
+        this.textbox.value = value;
         this.evaluated = true;
     }
+
+    this.setFromValue = function(value) {
+        this.parentheses_count = 0;
+        this.evaluated = true;
+        this.textbox.value = value;
+    }
+
+    this.setFromEquation = function(eq) {
+        this.evaluated = false;
+        this.parentheses_count = 0
+        this.textbox.value = eq;
+    }
+
 }
 
 ec = new EquationContext();
@@ -183,13 +239,20 @@ function insertFuncButtonPress() {
     let innerText = this.innerText;
     if (funcMap.has(innerText)) ec.push(innerText);
     else if (this.id == "square") {
-        ec.push("^");
-        ec.push("2");
+        if(ec.push("^")) ec.push("2");
     }
     else if (this.id == "undo") ec.undo();
     else if (this.id == "clear") ec.reset();
     else if (this.id == "equals") ec.evaluate();
 
+}
+
+function setHistoricEquation() {
+    ec.setFromEquation(this.innerText);
+}
+
+function setHistoricValue() {
+    ec.setFromValue(this.innerText);
 }
 
 function setListeners() {

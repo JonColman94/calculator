@@ -8,7 +8,7 @@
     justify-content: flex-end;
 }
 
-#history-div {
+#history-list-div {
     display: flex;
     flex-flow: column nowrap;
 
@@ -16,6 +16,22 @@
 
     width: 100%;
     height: auto;
+}
+
+.history-div {
+    display: grid;
+
+    padding: 0px 10px 0px 10px;
+
+    grid-template-columns: 3fr 10px 2fr;
+    grid-template-rows: auto;
+
+    grid-template-areas:
+        "history-eq history-equals history-value";
+}
+
+.history-value {
+    text-align: end;
 }
 
 .history {
@@ -28,16 +44,21 @@
 
 #equation-div {
     width: 100%;
+    height: auto;
+    margin-top: 5px;
 }
 
 #equation {
     width: 100%;
-    padding: 5px 10px 5px 10px;
     border-width: 1px 0px 1px 0px;
+    padding: 5px 0px 5px 0px;
+    text-indent: 10px;
 }
 
 #equals {
     width: 193.5%;
+    background-color: green;
+    color: white;
 }
 
 .key-grid {
