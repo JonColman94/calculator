@@ -1,7 +1,3 @@
-.key {
-    width: 30px;
-}
-
 #calculator {
     width: 100vw;
     height: 100vh;
@@ -9,38 +5,86 @@
     display: flex;
     flex-flow: column nowrap;
 
-    align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
+}
+
+#history-div {
+    display: flex;
+    flex-flow: column nowrap;
+
+    justify-content: flex-end;
+
+    width: 100%;
+    height: auto;
+}
+
+.history {
+    width: 100%;
+
+    border-width: 1px;
+    border-color: black;
+
+}
+
+#equation-div {
+    width: 100%;
+}
+
+#equation {
+    width: 100%;
+    padding: 5px 10px 5px 10px;
+    border-width: 1px 0px 1px 0px;
 }
 
 #equals {
-    width: 70px;
+    width: 193.5%;
+}
+
+.key-grid {
+    flex-grow: 1;
+    flex-shrink: 1;
+
+    width: 1fr;
+}
+
+#keys {
+    display: inline-grid;
+
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows:auto;
+
+    grid-template-areas:
+        "num-keys func-keys";
+
+    margin: 10px 5px 10px 5px;
 }
 
 #num-keys {
 
     display: inline-grid;
 
-    grid-template-columns: 40px 40px 40px;
+    grid-template-columns:repeat(3, 1fr);
     grid-template-rows: auto;
     grid-template-areas:
         "1 2 3"
         "4 5 6"
         "7 8 9"
-        "0 decimal ."
-
+        "0 decimal .";
 }
 
 #func-keys {
 
     display: inline-grid;
 
-    grid-template-columns: 40px 40px 40px;
+    grid-template-columns:repeat(3, 1fr);
     grid-template-rows: auto;
     grid-template-areas:
         "div undo clear"
         "mult left-bracket right-bracket"
         "sub square power"
-        "add equals equals"
+        "add equals equals";
+}
 
+.key {
+    margin: 2px 4% 2px 4%;
 }
