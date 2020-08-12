@@ -1,11 +1,36 @@
+main {
+    width: 90vw;
+
+    margin: 3vh 3vw auto 3vw;
+}
+
+h2 {
+    font-size: 26px;
+    color: white;
+    font-family: 'Marck Script', cursive;
+}
+
 #calculator {
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
 
     display: flex;
     flex-flow: column nowrap;
 
     justify-content: flex-end;
+
+    background-color: #282c30;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-width: 2px;
+    border-style: groove;
+    border-color: black;
+}
+
+#decor {
+    margin: 5% 0 5% 10%;
 }
 
 #history-list-div {
@@ -14,20 +39,34 @@
 
     justify-content: flex-end;
 
-    width: 100%;
-    height: auto;
+    width: 85%;
+    height: calc(8*27px - 1px);
+
+    margin: 0 auto;
+
+    background-color: #d5e6e2;
+
+    border-width: 33px 18px 20px 18px;
+    border-style: inset;
+    border-color: #1a1c1f;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    font-size: 14px;
 }
 
 .history-div {
     display: grid;
 
-    padding: 0px 10px 0px 10px;
+    padding: 5px 10px 5px 10px;
 
     grid-template-columns: 3fr 10px 2fr;
     grid-template-rows: auto;
 
     grid-template-areas:
         "history-eq history-equals history-value";
+
+    border-top: 1px solid black;
+    font-family: 'Orbitron', sans-serif;
 }
 
 .history-value {
@@ -43,16 +82,26 @@
 }
 
 #equation-div {
-    width: 100%;
+    width: 85%;
     height: auto;
-    margin-top: 5px;
+    margin: 0 auto;
+    padding: 5% auto 0 auto;
+
+    border-width: 5px 18px 15px 18px;
+    border-style: solid;
+    border-color: #1a1c1f;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
 }
 
 #equation {
     width: 100%;
-    border-width: 1px 0px 1px 0px;
+    border-width: 1px;
     padding: 5px 0px 5px 0px;
     text-indent: 10px;
+    border-radius: 5px;
+    background-color: #d5e6e2;
+    font-family: 'Orbitron', sans-serif;
 }
 
 #equals {
@@ -66,10 +115,14 @@
     flex-shrink: 1;
 
     width: 1fr;
+
+    background-color: lightgrey;
 }
 
 #keys {
     display: inline-grid;
+
+    height: 30%;
 
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows:auto;
@@ -77,7 +130,12 @@
     grid-template-areas:
         "num-keys func-keys";
 
-    margin: 10px 5px 10px 5px;
+    margin: 3% 5% 5% 5%;
+    border-radius: 3px;
+    border-color: grey;
+    border-width: 3px;
+    border-style: groove;
+    border-radius: 5px;
 }
 
 #num-keys {
@@ -93,11 +151,15 @@
         "0 decimal .";
 }
 
+#square {
+    font-size: 9px;
+}
+
 #func-keys {
 
     display: inline-grid;
 
-    grid-template-columns:repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: auto;
     grid-template-areas:
         "div undo clear"
@@ -108,4 +170,42 @@
 
 .key {
     margin: 2px 4% 2px 4%;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
 }
+
+.key:active {
+    transform: translateY(3px);
+    background-color: #969696;
+}
+
+.del {
+    background-color: orange;
+}
+
+.del:active {
+    background-color: #b36500;
+}
+
+sup {
+    font-size: 9px;
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
+    html {
+        transform: rotate(-90deg);
+        transform-origin: left top;
+        width: 100vh;
+        height: 100vw;
+        overflow-x: hidden;
+        position: absolute;
+        top: 100%;
+        left: 0;
+      }
+
+    main {
+        width: 90vh;
+    }
+  }

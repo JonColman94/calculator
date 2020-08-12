@@ -11,14 +11,21 @@ let funcMap = new Map([
 let HistoryQueue = function(equationContext) {
     this.div = document.querySelector("#history-list-div");
     this.queue = [];
-    this.queue_max_length = 20;
+    this.equation_queue = [];
+    this.value_queue = [];
+    this.queue_max_length = 8;
     this.equationContext = equationContext;
+    this.count = 0;
 
     this.push = function(eq, value) {
+        if (value.match(/ERROR/)) return;
         let isMobile = window.matchMedia("only screen and (max-width: 760px").matches;
+        let string_length_limit = isMobile ? 6 : 20;
         if (this.queue.length == this.queue_max_length) {
             old_history = this.queue.shift();
             this.div.removeChild(old_history);
+            this.equation_queue.shift();
+            this.value_queue.shift();
             old_history.childNodes[0].removeEventListener("click", setHistoricEquation);
             old_history.childNodes[0].removeEventListener("touchend", setHistoricEquation);
             old_history.childNodes[2].removeEventListener("click", setHistoricValue);
@@ -31,7 +38,9 @@ let HistoryQueue = function(equationContext) {
 
         new_history_eq = document.createElement("span");
         new_history_eq.classList.add("history-eq");
-        new_history_eq.innerText = eq;
+        new_history_eq.id = `eq${this.count}`
+        new_history_eq.innerText = 
+            (eq.length > string_length_limit ? eq.substring(0,string_length_limit) + "..." : eq);
 
         (!isMobile) ? 
             new_history_eq.addEventListener("click", setHistoricEquation) :
@@ -39,7 +48,9 @@ let HistoryQueue = function(equationContext) {
 
         new_history_value = document.createElement("span");
         new_history_value.classList.add("history-value");
-        new_history_value.innerText = value;
+        new_history_value.id = `vl${this.count}`
+        new_history_value.innerText = 
+            (value.length > string_length_limit ? value.substring(0,string_length_limit) + "..." : value);;
 
         (!isMobile) ?
             new_history_value.addEventListener("click", setHistoricValue) :
@@ -54,6 +65,23 @@ let HistoryQueue = function(equationContext) {
         new_history.appendChild(new_history_value);
         
         this.queue.push(new_history);
+        this.equation_queue.push([this.count, eq]);
+        this.value_queue.push([this.count, value]);
+
+        this.count++;
+    }
+
+    this.getString = function(id) {
+        if (id.substring(0,2) == "eq") {
+            for ([n, eq] of this.equation_queue) {
+                if (n == id.substring(2)) return eq;
+            }
+        }
+        else if (id.substring(0,2) == "vl") {
+            for ([n, val] of this.value_queue) {
+                if (n == id.substring(2)) return val;
+            }
+        }
     }
 }
 
@@ -145,6 +173,7 @@ let EquationContext = function() {
         if (this.parentheses_count > 0) return;
         this.parentheses_count == 0
         let eq = this.textbox.value;
+        if (eq.match(/[(NaN)(ERROR)]/)) return;
         let value = evaluateInfix(eq);
         this.history.push(eq, value);
         this.textbox.value = value;
@@ -219,7 +248,8 @@ function evaluatePostfix(postfix) {
             stack.push(res); 
         }
     });
-    return stack[0];
+    if (isNaN(stack[0])) return stack[0];
+    return parseFloat(stack[0]).toFixed(3);
 }
 
 function evaluateInfix(infix) {
@@ -248,11 +278,11 @@ function insertFuncButtonPress() {
 }
 
 function setHistoricEquation() {
-    ec.setFromEquation(this.innerText);
+    ec.setFromEquation(ec.history.getString(this.id));
 }
 
 function setHistoricValue() {
-    ec.setFromValue(this.innerText);
+    ec.setFromValue(ec.history.getString(this.id));
 }
 
 function setListeners() {
