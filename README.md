@@ -1,4 +1,4 @@
-#QChai's Calculator!
+# QChai's Calculator!
 
 This is QChai's calculator for TheOdinProject's calculator task! Features include:
 * Mobile support for touch and rotation lock.
@@ -10,7 +10,7 @@ This is QChai's calculator for TheOdinProject's calculator task! Features includ
 * Protection vs syntax errors
 * DIV0 protection
 
-**Keyboard Shortcuts
+## Keyboard Shortcuts
 * Numkeys for numbers
 * Fullstop for decimal point
 * +/^-() for operators/parentheses
@@ -19,5 +19,5 @@ This is QChai's calculator for TheOdinProject's calculator task! Features includ
 * s to square
 * Enter or = to evaluate your current expression
 
-**TODO:
+## TODO:
 * Pixel 2XL landscape support
