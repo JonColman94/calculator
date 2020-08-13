@@ -295,6 +295,7 @@ function setListeners() {
     // Predict mobile use
     let isMobile = window.matchMedia("only screen and (max-width: 760px").matches;
     let numkeys = document.querySelector("#num-keys");
+    
     Array.from(numkeys.childNodes).forEach(x => { 
                 (!isMobile) ? x.addEventListener("click", insertNumButtonPress) :
                 x.addEventListener("touchend", insertNumButtonPress);
