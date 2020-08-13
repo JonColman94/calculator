@@ -1,7 +1,12 @@
+body {
+    background-image: url("/res/desk.jpg");
+    background-size: 100% 100%;
+}
+
 main {
     width: 90vw;
 
-    margin: 3vh 3vw auto 3vw;
+    margin: 25% 3vw auto 3vw;
 }
 
 h2 {
@@ -27,10 +32,12 @@ h2 {
     border-width: 2px;
     border-style: groove;
     border-color: black;
+
+    box-shadow: 1vw -1vh 1vw 0.2vh black;
 }
 
 #decor {
-    margin: 5% 0 5% 10%;
+    padding: 1.5vh 8vw 1vh 5vw;
 }
 
 #history-list-div {
@@ -40,7 +47,9 @@ h2 {
     justify-content: flex-end;
 
     width: 85%;
-    height: calc(8*27px - 1px);
+    height: calc(8*3.73vh - 0.3vh);
+
+    font-size: 2.2vh;
 
     margin: 0 auto;
 
@@ -51,13 +60,14 @@ h2 {
     border-color: #1a1c1f;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    font-size: 14px;
+
+    box-shadow: 0.3vw 0vh 1vw 0.5vw #80a1ae inset;
 }
 
 .history-div {
     display: grid;
 
-    padding: 5px 10px 5px 10px;
+    padding: 0.70vh 10px 0.70vh 10px;
 
     grid-template-columns: 3fr 10px 2fr;
     grid-template-rows: auto;
@@ -102,6 +112,8 @@ h2 {
     border-radius: 5px;
     background-color: #d5e6e2;
     font-family: 'Orbitron', sans-serif;
+
+    box-shadow: 0.3vw 0vh 0.5vw 0.1vw #80a1ae inset;
 }
 
 #equals {
@@ -123,6 +135,7 @@ h2 {
     display: inline-grid;
 
     height: 30%;
+    width: 85%;
 
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows:auto;
@@ -130,10 +143,9 @@ h2 {
     grid-template-areas:
         "num-keys func-keys";
 
-    margin: 3% 5% 5% 5%;
-    border-radius: 3px;
+    margin: 3% auto 5% auto;
     border-color: grey;
-    border-width: 3px;
+    border-width: 0.5vh;
     border-style: groove;
     border-radius: 5px;
 }
@@ -152,7 +164,7 @@ h2 {
 }
 
 #square {
-    font-size: 9px;
+    font-size: 10px;
 }
 
 #func-keys {
@@ -170,15 +182,19 @@ h2 {
 
 .key {
     margin: 2px 4% 2px 4%;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border-top-left-radius: 7px;
-    border-top-right-radius: 7px;
+    border-bottom-left-radius: 2vh;
+    border-bottom-right-radius: 2vh;
+    border-top-left-radius: 1vh;
+    border-top-right-radius: 1vh;
+
+    box-shadow: 0.1vw -0.1vh 0.1vw 0.1vh black;
 }
 
 .key:active {
     transform: translateY(3px);
     background-color: #969696;
+
+    box-shadow: none;
 }
 
 .del {
@@ -190,9 +206,14 @@ h2 {
 }
 
 sup {
-    font-size: 9px;
+    font-size: 6px;
 }
 
+button {
+    outline: none;
+}
+
+/* Phones */
 @media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
     html {
         transform: rotate(-90deg);
@@ -207,5 +228,129 @@ sup {
 
     main {
         width: 90vh;
+        margin: 30vh 5vw auto 5vh;
     }
-  }
+}
+
+/* Portrait iPad (Pro) */
+@media screen and (min-width: 768px) and (orientation: portrait) {
+    main {
+        height: auto;
+        margin: 5vh auto;
+    }
+
+    #history-list-div {
+        height: calc(12*3.44vh - 3px);
+    }
+
+    #keys {
+        height: 20vh;
+    }
+
+    .key {
+        font-size: 2vh;
+        border-bottom-left-radius: 4vh;
+        border-bottom-right-radius: 4vh;
+        border-top-left-radius: 2vh;
+        border-top-right-radius: 2vh;
+    }
+
+    #square {
+        font-size: 2vh;
+    }
+
+    sup {
+        font-size: 1.5vh;
+    }
+
+    .history-div {
+        font-size: 2vh;
+    }
+
+    #equation {
+        font-size: 2vh;
+    }
+
+    #calculator {
+        border-bottom-left-radius: 80px;
+        border-bottom-right-radius: 80px;
+        border-top-left-radius: 30px;
+        border-top-right-radius: 30px;
+    }
+}
+/* Landscape iPad (Pro) */
+@media screen and (min-width: 768px) and (orientation: landscape) {
+    main {
+        width: auto;
+        height: 90vh;
+        margin: 5vh 5vw;
+    }
+
+    #history-list-div {
+        height: calc(12*3.44vh - 3px);
+    }
+
+    #keys {
+        height: 20vh;
+    }
+
+    .key {
+        font-size: 2vh;
+        border-bottom-left-radius: 4vh;
+        border-bottom-right-radius: 4vh;
+        border-top-left-radius: 2vh;
+        border-top-right-radius: 2vh;
+    }
+
+    #square {
+        font-size: 2vh;
+    }
+
+    sup {
+        font-size: 1.5vh;
+    }
+
+    .history-div {
+        font-size: 2vh;
+    }
+
+    #equation {
+        font-size: 2vh;
+    }
+
+    #calculator {
+        border-bottom-left-radius: 80px;
+        border-bottom-right-radius: 80px;
+        border-top-left-radius: 30px;
+        border-top-right-radius: 30px;
+    }
+
+    #decor {
+        margin-top: 1.75vh;
+        margin-left: 3vw;
+    }
+
+    h2 {
+        font-size: 200%;
+    }
+}
+
+/* Computer */
+@media screen and (min-width: 1366px) {
+    main {
+        width: 50vw;
+        margin: 4vh auto;
+    }
+
+    #decor {
+        margin: 0;
+    }
+
+    h2 {
+        font-size: 400%;
+    }
+
+    #history-list-div {
+        height: calc(8*5.1vh);
+    }
+}

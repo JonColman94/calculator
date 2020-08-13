@@ -13,19 +13,21 @@ let HistoryQueue = function(equationContext) {
     this.queue = [];
     this.equation_queue = [];
     this.value_queue = [];
-    this.queue_max_length = 8;
+    this.queue_max_length = 0;
     this.equationContext = equationContext;
     this.count = 0;
 
     this.push = function(eq, value) {
         if (value.match(/ERROR/)) return;
-        let isMobile = window.matchMedia("only screen and (max-width: 760px").matches;
+        let isMobile = window.matchMedia("only screen and (max-width: 767px").matches;
         let string_length_limit = isMobile ? 6 : 20;
+        this.queue_max_length = isMobile ? 8 : 12;
         if (this.queue.length == this.queue_max_length) {
             old_history = this.queue.shift();
             this.div.removeChild(old_history);
             this.equation_queue.shift();
             this.value_queue.shift();
+            // Remove listeners
             old_history.childNodes[0].removeEventListener("click", setHistoricEquation);
             old_history.childNodes[0].removeEventListener("touchend", setHistoricEquation);
             old_history.childNodes[2].removeEventListener("click", setHistoricValue);
@@ -173,7 +175,7 @@ let EquationContext = function() {
         if (this.parentheses_count > 0) return;
         this.parentheses_count == 0
         let eq = this.textbox.value;
-        if (eq.match(/[(NaN)(ERROR)]/)) return;
+        if (eq.match(/ERROR/)) return;
         let value = evaluateInfix(eq);
         this.history.push(eq, value);
         this.textbox.value = value;
@@ -261,6 +263,10 @@ function operate(operator, op1, op2) {
     else return funcMap.get(operator).func(op1, op2);
 }
 
+function insertSquare() {
+    if(ec.push("^")) ec.push("2");
+}
+
 function insertNumButtonPress() {
     ec.push(this.innerText);
 }
@@ -299,4 +305,19 @@ function setListeners() {
                 (!isMobile) ? x.addEventListener("click", insertFuncButtonPress) :
                 x.addEventListener("touchend", insertFuncButtonPress);
     });
+    window.addEventListener("keyup", processKeyInput);
 }
+
+function processKeyInput() {
+    let key = arguments[0].key;
+    let ctrl = arguments[0].ctrlKey;
+    console.log(key);
+    if ((ctrl && key == "z") || key == "Backspace") ec.undo();
+    else if (key.match(/^[\d\+\/\-\*\^\(\)]$/)) ec.push(key);
+    else if (key == "s") {
+        if (ec.push("^")) ec.push("2");
+    }
+    else if (key == "Enter" || key == "=") ec.evaluate();
+    else if (key == "c" || key == "Escape") ec.reset();
+}
+
