@@ -295,7 +295,7 @@ function setListeners() {
     // Predict mobile use
     let isMobile = window.matchMedia("only screen and (max-width: 760px").matches;
     let numkeys = document.querySelector("#num-keys");
-    
+
     Array.from(numkeys.childNodes).forEach(x => { 
                 (!isMobile) ? x.addEventListener("click", insertNumButtonPress) :
                 x.addEventListener("touchend", insertNumButtonPress);
@@ -314,7 +314,7 @@ function processKeyInput() {
     let ctrl = arguments[0].ctrlKey;
     console.log(key);
     if ((ctrl && key == "z") || key == "Backspace") ec.undo();
-    else if (key.match(/^[\d\+\/\-\*\^\(\)]$/)) ec.push(key);
+    else if (key.match(/^[\d\+\/\-\*\^\(\)\.]$/)) ec.push(key);
     else if (key == "s") {
         if (ec.push("^")) ec.push("2");
     }
